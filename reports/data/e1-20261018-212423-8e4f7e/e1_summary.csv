@@ -1,0 +1,16 @@
+workload,config,label,runs,throughput_mean,throughput_sd,p50_us,p95_us,p99_us,errors,delta_vs_direct_pct,mean_backlog_at_end
+A,direct,Direct Redis (baseline),3,1142.3,433.8,560.9,3229.2,5252.5,0,0.0,
+A,hanf,"HANF routing, 4 shards",3,1126.2,619.1,623.9,3719.2,5612.9,0,-1.4,0.0
+A,hanf_sync_ml,HANF + synchronous ML scoring,3,852.7,529.9,782.2,4511.4,10733.1,0,-25.4,0.0
+A,hanf_batched_ml,HANF + batched ML scoring,3,1136.7,346.9,591.2,2755.2,5177.2,0,-0.5,0.0
+A,hanf_async_ml,HANF + async ML scoring,3,678.4,66.1,816.1,4975.2,8208.7,0,-40.6,2.3
+B,direct,Direct Redis (baseline),3,1107.4,184.7,473.6,3571.9,5788.7,0,0.0,
+B,hanf,"HANF routing, 4 shards",3,971.6,279.8,612.4,3754.8,6138.5,0,-12.3,0.0
+B,hanf_sync_ml,HANF + synchronous ML scoring,3,652.5,171.4,792.1,5635.2,11387.0,0,-41.1,0.0
+B,hanf_batched_ml,HANF + batched ML scoring,3,738.1,101.7,740.9,5044.4,7217.9,0,-33.3,0.0
+B,hanf_async_ml,HANF + async ML scoring,3,757.5,136.6,740.1,4972.5,7426.7,0,-31.6,2.7
+C,direct,Direct Redis (baseline),3,1020.7,188.8,543.9,3836.2,5915.1,0,0.0,
+C,hanf,"HANF routing, 4 shards",3,803.1,133.1,750.4,4219.7,6988.7,0,-21.3,0.0
+C,hanf_sync_ml,HANF + synchronous ML scoring,3,684.1,100.4,765.3,5215.1,9521.9,0,-33.0,0.0
+C,hanf_batched_ml,HANF + batched ML scoring,3,694.6,47.9,799.4,5197.1,7375.0,0,-31.9,0.0
+C,hanf_async_ml,HANF + async ML scoring,3,676.7,184.3,784.1,5405.5,8683.3,0,-33.7,3.3

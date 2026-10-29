@@ -1,0 +1,4 @@
+slo_pct,mean_ms,p95_ms,stale_pct,phases_over_slo,profiles
+0.1,38.755,176.718,0.0,0,"{""ONE/QUORUM"": 8, ""QUORUM/ONE"": 8}"
+1.0,38.755,176.718,0.0,0,"{""ONE/QUORUM"": 8, ""QUORUM/ONE"": 8}"
+5.0,38.755,176.718,0.0,0,"{""ONE/QUORUM"": 8, ""QUORUM/ONE"": 8}"

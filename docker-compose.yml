@@ -1,0 +1,66 @@
+# HANF local infrastructure.
+#   docker compose up -d                  -> five Redis shards (ports 7001-7005), the primary demo
+#   docker compose --profile full up -d   -> also MongoDB (27017) and Cassandra (9042)
+# Redis persistence is disabled, matching the Review II setup (data is reproducible via /api/seed).
+
+x-redis: &redis
+  image: redis:7.0.15-alpine
+  command: ["redis-server", "--save", "", "--appendonly", "no", "--maxmemory", "256mb"]
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 5s
+    timeout: 3s
+    retries: 10
+
+services:
+  redis-1:
+    <<: *redis
+    container_name: hanf-redis-1
+    ports: ["7001:6379"]
+  redis-2:
+    <<: *redis
+    container_name: hanf-redis-2
+    ports: ["7002:6379"]
+  redis-3:
+    <<: *redis
+    container_name: hanf-redis-3
+    ports: ["7003:6379"]
+  redis-4:
+    <<: *redis
+    container_name: hanf-redis-4
+    ports: ["7004:6379"]
+  redis-5:
+    <<: *redis
+    container_name: hanf-redis-5
+    ports: ["7005:6379"]
+
+  mongo:
+    image: mongo:7.0
+    container_name: hanf-mongo
+    profiles: ["full"]
+    restart: unless-stopped
+    ports: ["27017:27017"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  cassandra:
+    image: cassandra:4.1
+    container_name: hanf-cassandra
+    profiles: ["full"]
+    restart: unless-stopped
+    ports: ["9042:9042"]
+    environment:
+      MAX_HEAP_SIZE: 512M
+      HEAP_NEWSIZE: 128M
+      CASSANDRA_CLUSTER_NAME: hanf
+      CASSANDRA_DC: dc1
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces' >/dev/null 2>&1"]
+      interval: 15s
+      timeout: 10s
+      retries: 20

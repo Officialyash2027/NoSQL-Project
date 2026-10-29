@@ -1,0 +1,20 @@
+{
+  "timestamp_utc": "2026-10-18T15:38:18+00:00",
+  "os": "Windows 10 (10.0.26300)",
+  "cpu": "11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz",
+  "logical_cpus": 8,
+  "memory_gb": 7.8,
+  "python": "3.11.1",
+  "libraries": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "redis-py": "8.1.0",
+    "matplotlib": "3.11.2",
+    "fastapi": "0.144.0"
+  },
+  "engines": {
+    "redis_mode": "live"
+  },
+  "git_commit": null
+}

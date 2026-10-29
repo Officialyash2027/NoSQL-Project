@@ -1,0 +1,30 @@
+{
+  "e1": {
+    "run_id": "e1-20261018-205910-e7d3a6",
+    "profile": "default",
+    "evidence": "live Redis measurement",
+    "started_at": 1792337350.7017791,
+    "duration_s": 539.59
+  },
+  "e2": {
+    "run_id": "e2-20261018-210810-c9659d",
+    "profile": "default",
+    "evidence": "algorithmic simulation + live Redis migration",
+    "started_at": 1792337890.4029274,
+    "duration_s": 8.56
+  },
+  "e3": {
+    "run_id": "e3-20261018-210819-f4d63d",
+    "profile": "default",
+    "evidence": "synthetic-data evaluation",
+    "started_at": 1792337899.014584,
+    "duration_s": 49.04
+  },
+  "e4": {
+    "run_id": "e4-20261018-210908-95be49",
+    "profile": "default",
+    "evidence": "simulation (no live multi-region cluster)",
+    "started_at": 1792337948.1264777,
+    "duration_s": 2.62
+  }
+}

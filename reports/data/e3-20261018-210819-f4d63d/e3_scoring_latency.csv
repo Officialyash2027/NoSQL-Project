@@ -1,0 +1,4 @@
+single_window_mean,single_window_p95,batch20_call_mean,batch20_per_window,seed
+8.501,12.903,7.239,0.362,42
+7.551,11.293,6.725,0.336,43
+7.07,8.984,8.249,0.412,44

@@ -1,0 +1,13 @@
+read_delay_ms,strategy,mean_ms,stale_pct,phases_over_slo
+5,static ONE/ONE,2.063,93.775,16
+5,static QUORUM/QUORUM,75.388,0.0,0
+5,static ALL/ALL,238.859,0.0,0
+5,HANF adaptive,38.755,0.0,0
+15,static ONE/ONE,2.063,72.7781,16
+15,static QUORUM/QUORUM,75.388,0.0,0
+15,static ALL/ALL,238.859,0.0,0
+15,HANF adaptive,38.755,0.0,0
+50,static ONE/ONE,2.063,42.0187,16
+50,static QUORUM/QUORUM,75.388,0.0,0
+50,static ALL/ALL,238.859,0.0,0
+50,HANF adaptive,38.755,0.0,0

@@ -1,0 +1,529 @@
+{
+  "run_id": "e2-20261018-210810-c9659d",
+  "experiment": "e2",
+  "title": "Adaptive sharding (remapping, rebalancing, live migration)",
+  "evidence": "algorithmic simulation + live Redis migration",
+  "status": "completed",
+  "started_at": 1792337890.4029274,
+  "duration_s": 8.56,
+  "config": {
+    "remap_keys": 100000,
+    "node_counts": [
+      [
+        4,
+        5
+      ],
+      [
+        10,
+        11
+      ]
+    ],
+    "vnode_options": [
+      16,
+      64,
+      128,
+      256
+    ],
+    "ring_seeds": 5,
+    "rebalance_keys": 20000,
+    "rebalance_nodes": 8,
+    "rebalance_vnodes": 128,
+    "rebalance_requests": 200000,
+    "rebalance_rounds": 6,
+    "zipf_exponents": [
+      0.7,
+      0.99
+    ],
+    "live_keys": 50000,
+    "live_value_bytes": 100,
+    "verify_every": 5,
+    "seed": 21,
+    "profile": "default"
+  },
+  "environment": {
+    "timestamp_utc": "2026-10-18T15:38:10+00:00",
+    "os": "Windows 10 (10.0.26300)",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz",
+    "logical_cpus": 8,
+    "memory_gb": 7.8,
+    "python": "3.11.1",
+    "libraries": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "redis-py": "8.1.0",
+      "matplotlib": "3.11.2",
+      "fastapi": "0.144.0"
+    },
+    "engines": {
+      "redis_mode": "live",
+      "redis_version": "7.0.15",
+      "redis_endpoints": [
+        "127.0.0.1:7001/db1",
+        "127.0.0.1:7002/db1",
+        "127.0.0.1:7003/db1",
+        "127.0.0.1:7004/db1",
+        "127.0.0.1:7005/db1"
+      ]
+    },
+    "git_commit": null
+  },
+  "failures": [],
+  "graphs": [
+    "e2_sharding.png",
+    "e2_live_migration.png"
+  ],
+  "results": {
+    "remap": [
+      {
+        "scheme": "modulo",
+        "nodes": "4->5",
+        "remapped_pct_mean": 79.92,
+        "remapped_pct_sd": 0.0,
+        "ideal_pct": 20.0,
+        "imbalance_mean": 1.006,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=16",
+        "nodes": "4->5",
+        "remapped_pct_mean": 21.55,
+        "remapped_pct_sd": 3.3,
+        "ideal_pct": 20.0,
+        "imbalance_mean": 1.301,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=64",
+        "nodes": "4->5",
+        "remapped_pct_mean": 18.21,
+        "remapped_pct_sd": 3.54,
+        "ideal_pct": 20.0,
+        "imbalance_mean": 1.134,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=128",
+        "nodes": "4->5",
+        "remapped_pct_mean": 18.88,
+        "remapped_pct_sd": 2.02,
+        "ideal_pct": 20.0,
+        "imbalance_mean": 1.146,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=256",
+        "nodes": "4->5",
+        "remapped_pct_mean": 20.35,
+        "remapped_pct_sd": 1.27,
+        "ideal_pct": 20.0,
+        "imbalance_mean": 1.072,
+        "seeds": 5
+      },
+      {
+        "scheme": "modulo",
+        "nodes": "10->11",
+        "remapped_pct_mean": 91.07,
+        "remapped_pct_sd": 0.0,
+        "ideal_pct": 9.09,
+        "imbalance_mean": 1.017,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=16",
+        "nodes": "10->11",
+        "remapped_pct_mean": 8.86,
+        "remapped_pct_sd": 1.85,
+        "ideal_pct": 9.09,
+        "imbalance_mean": 1.42,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=64",
+        "nodes": "10->11",
+        "remapped_pct_mean": 8.71,
+        "remapped_pct_sd": 0.95,
+        "ideal_pct": 9.09,
+        "imbalance_mean": 1.136,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=128",
+        "nodes": "10->11",
+        "remapped_pct_mean": 8.54,
+        "remapped_pct_sd": 0.77,
+        "ideal_pct": 9.09,
+        "imbalance_mean": 1.179,
+        "seeds": 5
+      },
+      {
+        "scheme": "consistent v=256",
+        "nodes": "10->11",
+        "remapped_pct_mean": 9.21,
+        "remapped_pct_sd": 0.44,
+        "ideal_pct": 9.09,
+        "imbalance_mean": 1.111,
+        "seeds": 5
+      }
+    ],
+    "rebalance": [
+      {
+        "zipf_exponent": 0.7,
+        "round": 0,
+        "max_over_mean": 1.0724,
+        "cv": 0.0683,
+        "hottest_key_share_pct": 1.64,
+        "vnodes": {
+          "node-0": 128,
+          "node-1": 128,
+          "node-2": 128,
+          "node-3": 128,
+          "node-4": 128,
+          "node-5": 128,
+          "node-6": 128,
+          "node-7": 128
+        },
+        "keys_moved_by_next_adjustment_pct": 2.66
+      },
+      {
+        "zipf_exponent": 0.7,
+        "round": 1,
+        "max_over_mean": 1.043,
+        "cv": 0.0373,
+        "hottest_key_share_pct": 1.64,
+        "vnodes": {
+          "node-0": 133,
+          "node-1": 137,
+          "node-2": 126,
+          "node-3": 125,
+          "node-4": 123,
+          "node-5": 125,
+          "node-6": 129,
+          "node-7": 125
+        },
+        "keys_moved_by_next_adjustment_pct": 1.34
+      },
+      {
+        "zipf_exponent": 0.7,
+        "round": 2,
+        "max_over_mean": 1.0201,
+        "cv": 0.0183,
+        "hottest_key_share_pct": 1.64,
+        "vnodes": {
+          "node-0": 137,
+          "node-1": 140,
+          "node-2": 126,
+          "node-3": 123,
+          "node-4": 121,
+          "node-5": 123,
+          "node-6": 130,
+          "node-7": 122
+        },
+        "keys_moved_by_next_adjustment_pct": 0.58
+      },
+      {
+        "zipf_exponent": 0.7,
+        "round": 3,
+        "max_over_mean": 1.0224,
+        "cv": 0.0141,
+        "hottest_key_share_pct": 1.64,
+        "vnodes": {
+          "node-0": 140,
+          "node-1": 141,
+          "node-2": 125,
+          "node-3": 122,
+          "node-4": 120,
+          "node-5": 124,
+          "node-6": 130,
+          "node-7": 122
+        },
+        "keys_moved_by_next_adjustment_pct": 0.15
+      },
+      {
+        "zipf_exponent": 0.7,
+        "round": 4,
+        "max_over_mean": 1.0216,
+        "cv": 0.0171,
+        "hottest_key_share_pct": 1.64,
+        "vnodes": {
+          "node-0": 141,
+          "node-1": 142,
+          "node-2": 126,
+          "node-3": 121,
+          "node-4": 119,
+          "node-5": 125,
+          "node-6": 130,
+          "node-7": 121
+        },
+        "keys_moved_by_next_adjustment_pct": 0.73
+      },
+      {
+        "zipf_exponent": 0.7,
+        "round": 5,
+        "max_over_mean": 1.0205,
+        "cv": 0.0115,
+        "hottest_key_share_pct": 1.64,
+        "vnodes": {
+          "node-0": 142,
+          "node-1": 143,
+          "node-2": 126,
+          "node-3": 121,
+          "node-4": 118,
+          "node-5": 124,
+          "node-6": 132,
+          "node-7": 120
+        }
+      },
+      {
+        "zipf_exponent": 0.99,
+        "round": 0,
+        "max_over_mean": 1.5213,
+        "cv": 0.3049,
+        "hottest_key_share_pct": 9.162,
+        "vnodes": {
+          "node-0": 128,
+          "node-1": 128,
+          "node-2": 128,
+          "node-3": 128,
+          "node-4": 128,
+          "node-5": 128,
+          "node-6": 128,
+          "node-7": 128
+        },
+        "keys_moved_by_next_adjustment_pct": 9.17
+      },
+      {
+        "zipf_exponent": 0.99,
+        "round": 1,
+        "max_over_mean": 1.6454,
+        "cv": 0.3078,
+        "hottest_key_share_pct": 9.162,
+        "vnodes": {
+          "node-0": 149,
+          "node-1": 149,
+          "node-2": 133,
+          "node-3": 95,
+          "node-4": 124,
+          "node-5": 133,
+          "node-6": 142,
+          "node-7": 100
+        },
+        "keys_moved_by_next_adjustment_pct": 9.15
+      },
+      {
+        "zipf_exponent": 0.99,
+        "round": 2,
+        "max_over_mean": 1.7458,
+        "cv": 0.3284,
+        "hottest_key_share_pct": 9.162,
+        "vnodes": {
+          "node-0": 168,
+          "node-1": 164,
+          "node-2": 90,
+          "node-3": 110,
+          "node-4": 119,
+          "node-5": 138,
+          "node-6": 155,
+          "node-7": 85
+        },
+        "keys_moved_by_next_adjustment_pct": 10.15
+      },
+      {
+        "zipf_exponent": 0.99,
+        "round": 3,
+        "max_over_mean": 1.5332,
+        "cv": 0.2964,
+        "hottest_key_share_pct": 9.162,
+        "vnodes": {
+          "node-0": 181,
+          "node-1": 169,
+          "node-2": 105,
+          "node-3": 126,
+          "node-4": 75,
+          "node-5": 143,
+          "node-6": 164,
+          "node-7": 74
+        },
+        "keys_moved_by_next_adjustment_pct": 9.01
+      },
+      {
+        "zipf_exponent": 0.99,
+        "round": 4,
+        "max_over_mean": 1.5936,
+        "cv": 0.2761,
+        "hottest_key_share_pct": 9.162,
+        "vnodes": {
+          "node-0": 174,
+          "node-1": 168,
+          "node-2": 116,
+          "node-3": 92,
+          "node-4": 90,
+          "node-5": 148,
+          "node-6": 135,
+          "node-7": 85
+        },
+        "keys_moved_by_next_adjustment_pct": 6.68
+      },
+      {
+        "zipf_exponent": 0.99,
+        "round": 5,
+        "max_over_mean": 1.5056,
+        "cv": 0.2723,
+        "hottest_key_share_pct": 9.162,
+        "vnodes": {
+          "node-0": 172,
+          "node-1": 169,
+          "node-2": 82,
+          "node-3": 108,
+          "node-4": 103,
+          "node-5": 151,
+          "node-6": 142,
+          "node-7": 77
+        }
+      }
+    ],
+    "live_migration": {
+      "keys_loaded": 50000,
+      "load_seconds": 1.084,
+      "migration": {
+        "action": "add shard-5",
+        "from_shards": [
+          "shard-1",
+          "shard-2",
+          "shard-3",
+          "shard-4"
+        ],
+        "to_shards": [
+          "shard-1",
+          "shard-2",
+          "shard-3",
+          "shard-4",
+          "shard-5"
+        ],
+        "started_at": 1792337892.6177444,
+        "elapsed_s": 1.229,
+        "scanned": 50000,
+        "to_move": 10688,
+        "moved": 10688,
+        "verified": 10688,
+        "already_present": 0,
+        "kept_newer_destination": 0,
+        "failed": 0,
+        "failed_keys": [],
+        "keys_before": {
+          "shard-1": 12382,
+          "shard-2": 14864,
+          "shard-3": 11592,
+          "shard-4": 11162,
+          "shard-5": 0
+        },
+        "keys_after": {
+          "shard-1": 9917,
+          "shard-2": 10985,
+          "shard-3": 9884,
+          "shard-4": 8526,
+          "shard-5": 10688
+        },
+        "total_before": 50000,
+        "total_after": 50000,
+        "moves_by_route": {
+          "shard-1->shard-5": 2465,
+          "shard-2->shard-5": 3879,
+          "shard-3->shard-5": 1708,
+          "shard-4->shard-5": 2636
+        },
+        "sample_checks": [
+          {
+            "key": "e2:9648",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:29565",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:6068",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:20033",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:17631",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:5295",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:46504",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:14802",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:42193",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          },
+          {
+            "key": "e2:33024",
+            "from": "shard-1",
+            "to": "shard-5",
+            "bytes": 113,
+            "match": true
+          }
+        ],
+        "log": [
+          "scanned shard-5",
+          "scanned shard-1",
+          "scanned shard-2",
+          "scanned shard-3",
+          "scanned shard-4",
+          "completed: moved 10688/10688 keys in 1.229s; total 50000 -> 50000"
+        ],
+        "status": "completed",
+        "remapped_pct": 21.38,
+        "count_reconciled": true
+      },
+      "sample_verified": {
+        "checked": 10000,
+        "mismatches": 0,
+        "examples": []
+      },
+      "verify_seconds": 4.408,
+      "keys_not_on_ring_owner": 0,
+      "total_reconciled": true
+    }
+  }
+}

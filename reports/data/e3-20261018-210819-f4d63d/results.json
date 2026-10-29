@@ -1,0 +1,1784 @@
+{
+  "run_id": "e3-20261018-210819-f4d63d",
+  "experiment": "e3",
+  "title": "ML security monitor (Isolation Forest vs static rules)",
+  "evidence": "synthetic-data evaluation",
+  "status": "completed",
+  "started_at": 1792337899.014584,
+  "duration_s": 49.04,
+  "config": {
+    "train_windows": 2000,
+    "val_normal": 1000,
+    "val_per_attack": 100,
+    "test_normal": 3000,
+    "test_per_attack": 200,
+    "subtle_fraction": 0.3,
+    "contaminations": [
+      0.005,
+      0.01,
+      0.02,
+      0.03,
+      0.05
+    ],
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "latency_calls": 300,
+    "intensity_levels": [
+      0.01,
+      0.02,
+      0.04,
+      0.08,
+      0.16,
+      0.3
+    ],
+    "intensity_windows": 100,
+    "profile": "default"
+  },
+  "environment": {
+    "timestamp_utc": "2026-10-18T15:38:18+00:00",
+    "os": "Windows 10 (10.0.26300)",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz",
+    "logical_cpus": 8,
+    "memory_gb": 7.8,
+    "python": "3.11.1",
+    "libraries": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "redis-py": "8.1.0",
+      "matplotlib": "3.11.2",
+      "fastapi": "0.144.0"
+    },
+    "engines": {
+      "redis_mode": "live"
+    },
+    "git_commit": null
+  },
+  "failures": [],
+  "graphs": [
+    "e3_detection.png",
+    "e3_scores_evasion.png"
+  ],
+  "results": {
+    "summary": [
+      {
+        "method": "Static rules",
+        "seeds": 3,
+        "times_selected": 0,
+        "precision": 0.9992,
+        "precision_sd": 0.0014,
+        "recall": 0.7033,
+        "recall_sd": 0.0017,
+        "f1": 0.8256,
+        "f1_sd": 0.0016,
+        "fpr": 0.0001,
+        "fpr_sd": 0.0002,
+        "recall_injection": 0.7,
+        "recall_injection_sd": 0.0,
+        "recall_exfiltration": 0.69,
+        "recall_exfiltration_sd": 0.005,
+        "recall_bruteforce": 0.72,
+        "recall_bruteforce_sd": 0.0,
+        "subtle_recall": 0.0222,
+        "subtle_recall_sd": 0.0
+      },
+      {
+        "method": "Isolation Forest (c=0.005)",
+        "seeds": 3,
+        "times_selected": 3,
+        "precision": 0.9662,
+        "precision_sd": 0.0071,
+        "recall": 0.9978,
+        "recall_sd": 0.0009,
+        "f1": 0.9817,
+        "f1_sd": 0.0033,
+        "fpr": 0.007,
+        "fpr_sd": 0.0015,
+        "recall_injection": 1.0,
+        "recall_injection_sd": 0.0,
+        "recall_exfiltration": 0.9933,
+        "recall_exfiltration_sd": 0.0029,
+        "recall_bruteforce": 1.0,
+        "recall_bruteforce_sd": 0.0,
+        "subtle_recall": 0.9926,
+        "subtle_recall_sd": 0.0032
+      },
+      {
+        "method": "Isolation Forest (c=0.01)",
+        "seeds": 3,
+        "times_selected": 0,
+        "precision": 0.9391,
+        "precision_sd": 0.013,
+        "recall": 1.0,
+        "recall_sd": 0.0,
+        "f1": 0.9686,
+        "f1_sd": 0.0069,
+        "fpr": 0.013,
+        "fpr_sd": 0.0029,
+        "recall_injection": 1.0,
+        "recall_injection_sd": 0.0,
+        "recall_exfiltration": 1.0,
+        "recall_exfiltration_sd": 0.0,
+        "recall_bruteforce": 1.0,
+        "recall_bruteforce_sd": 0.0,
+        "subtle_recall": 1.0,
+        "subtle_recall_sd": 0.0
+      },
+      {
+        "method": "Isolation Forest (c=0.02)",
+        "seeds": 3,
+        "times_selected": 0,
+        "precision": 0.897,
+        "precision_sd": 0.0138,
+        "recall": 1.0,
+        "recall_sd": 0.0,
+        "f1": 0.9457,
+        "f1_sd": 0.0077,
+        "fpr": 0.023,
+        "fpr_sd": 0.0035,
+        "recall_injection": 1.0,
+        "recall_injection_sd": 0.0,
+        "recall_exfiltration": 1.0,
+        "recall_exfiltration_sd": 0.0,
+        "recall_bruteforce": 1.0,
+        "recall_bruteforce_sd": 0.0,
+        "subtle_recall": 1.0,
+        "subtle_recall_sd": 0.0
+      },
+      {
+        "method": "Isolation Forest (c=0.03)",
+        "seeds": 3,
+        "times_selected": 0,
+        "precision": 0.8662,
+        "precision_sd": 0.0227,
+        "recall": 1.0,
+        "recall_sd": 0.0,
+        "f1": 0.9282,
+        "f1_sd": 0.0131,
+        "fpr": 0.031,
+        "fpr_sd": 0.0061,
+        "recall_injection": 1.0,
+        "recall_injection_sd": 0.0,
+        "recall_exfiltration": 1.0,
+        "recall_exfiltration_sd": 0.0,
+        "recall_bruteforce": 1.0,
+        "recall_bruteforce_sd": 0.0,
+        "subtle_recall": 1.0,
+        "subtle_recall_sd": 0.0
+      },
+      {
+        "method": "Isolation Forest (c=0.05)",
+        "seeds": 3,
+        "times_selected": 0,
+        "precision": 0.7953,
+        "precision_sd": 0.0167,
+        "recall": 1.0,
+        "recall_sd": 0.0,
+        "f1": 0.8859,
+        "f1_sd": 0.0104,
+        "fpr": 0.0516,
+        "fpr_sd": 0.0054,
+        "recall_injection": 1.0,
+        "recall_injection_sd": 0.0,
+        "recall_exfiltration": 1.0,
+        "recall_exfiltration_sd": 0.0,
+        "recall_bruteforce": 1.0,
+        "recall_bruteforce_sd": 0.0,
+        "subtle_recall": 1.0,
+        "subtle_recall_sd": 0.0
+      }
+    ],
+    "selected": [
+      {
+        "seed": 42,
+        "selected_contamination": 0.005,
+        "precision": 0.9724,
+        "recall": 0.9967,
+        "f1": 0.9844,
+        "fpr": 0.0057,
+        "accuracy": 0.9947,
+        "tp": 598,
+        "fp": 17,
+        "tn": 2983,
+        "fn": 2,
+        "subtle_recall": 0.9889,
+        "recall_bruteforce": 1.0,
+        "recall_exfiltration": 0.99,
+        "recall_injection": 1.0
+      },
+      {
+        "seed": 43,
+        "selected_contamination": 0.005,
+        "precision": 0.9584,
+        "recall": 0.9983,
+        "f1": 0.978,
+        "fpr": 0.0087,
+        "accuracy": 0.9925,
+        "tp": 599,
+        "fp": 26,
+        "tn": 2974,
+        "fn": 1,
+        "subtle_recall": 0.9944,
+        "recall_bruteforce": 1.0,
+        "recall_exfiltration": 0.995,
+        "recall_injection": 1.0
+      },
+      {
+        "seed": 44,
+        "selected_contamination": 0.005,
+        "precision": 0.9677,
+        "recall": 0.9983,
+        "f1": 0.9828,
+        "fpr": 0.0067,
+        "accuracy": 0.9942,
+        "tp": 599,
+        "fp": 20,
+        "tn": 2980,
+        "fn": 1,
+        "subtle_recall": 0.9944,
+        "recall_bruteforce": 1.0,
+        "recall_exfiltration": 0.995,
+        "recall_injection": 1.0
+      }
+    ],
+    "per_seed": [
+      {
+        "seed": 42,
+        "n_train": 2000,
+        "n_val": 1300,
+        "n_test": 3600,
+        "static_rules": {
+          "precision": 1.0,
+          "recall": 0.705,
+          "f1": 0.827,
+          "fpr": 0.0,
+          "accuracy": 0.9508,
+          "tp": 423,
+          "fp": 0,
+          "tn": 3000,
+          "fn": 177,
+          "per_attack_recall": {
+            "bruteforce": 0.72,
+            "exfiltration": 0.695,
+            "injection": 0.7
+          },
+          "subtle_recall": 0.0222
+        },
+        "isolation_forest": {
+          "0.005": {
+            "validation": {
+              "precision": 0.9868,
+              "recall": 1.0,
+              "f1": 0.9934,
+              "fpr": 0.004,
+              "accuracy": 0.9969,
+              "tp": 300,
+              "fp": 4,
+              "tn": 996,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.9724,
+              "recall": 0.9967,
+              "f1": 0.9844,
+              "fpr": 0.0057,
+              "accuracy": 0.9947,
+              "tp": 598,
+              "fp": 17,
+              "tn": 2983,
+              "fn": 2,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 0.99,
+                "injection": 1.0
+              },
+              "subtle_recall": 0.9889
+            },
+            "threshold": 0.6422991453874578
+          },
+          "0.01": {
+            "validation": {
+              "precision": 0.9646,
+              "recall": 1.0,
+              "f1": 0.982,
+              "fpr": 0.011,
+              "accuracy": 0.9915,
+              "tp": 300,
+              "fp": 11,
+              "tn": 989,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.9434,
+              "recall": 1.0,
+              "f1": 0.9709,
+              "fpr": 0.012,
+              "accuracy": 0.99,
+              "tp": 600,
+              "fp": 36,
+              "tn": 2964,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.6155546988931518
+          },
+          "0.02": {
+            "validation": {
+              "precision": 0.9375,
+              "recall": 1.0,
+              "f1": 0.9677,
+              "fpr": 0.02,
+              "accuracy": 0.9846,
+              "tp": 300,
+              "fp": 20,
+              "tn": 980,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.9036,
+              "recall": 1.0,
+              "f1": 0.9494,
+              "fpr": 0.0213,
+              "accuracy": 0.9822,
+              "tp": 600,
+              "fp": 64,
+              "tn": 2936,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.6000832476360797
+          },
+          "0.03": {
+            "validation": {
+              "precision": 0.9202,
+              "recall": 1.0,
+              "f1": 0.9585,
+              "fpr": 0.026,
+              "accuracy": 0.98,
+              "tp": 300,
+              "fp": 26,
+              "tn": 974,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.8824,
+              "recall": 1.0,
+              "f1": 0.9375,
+              "fpr": 0.0267,
+              "accuracy": 0.9778,
+              "tp": 600,
+              "fp": 80,
+              "tn": 2920,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.5904257811002098
+          },
+          "0.05": {
+            "validation": {
+              "precision": 0.8721,
+              "recall": 1.0,
+              "f1": 0.9317,
+              "fpr": 0.044,
+              "accuracy": 0.9662,
+              "tp": 300,
+              "fp": 44,
+              "tn": 956,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.8075,
+              "recall": 1.0,
+              "f1": 0.8935,
+              "fpr": 0.0477,
+              "accuracy": 0.9603,
+              "tp": 600,
+              "fp": 143,
+              "tn": 2857,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.5714617062941932
+          }
+        },
+        "selected_contamination": 0.005,
+        "selected_test": {
+          "precision": 0.9724,
+          "recall": 0.9967,
+          "f1": 0.9844,
+          "fpr": 0.0057,
+          "accuracy": 0.9947,
+          "tp": 598,
+          "fp": 17,
+          "tn": 2983,
+          "fn": 2,
+          "per_attack_recall": {
+            "bruteforce": 1.0,
+            "exfiltration": 0.99,
+            "injection": 1.0
+          },
+          "subtle_recall": 0.9889
+        },
+        "score_distribution": {
+          "normal": [
+            0.36278380881715844,
+            0.3809378094487177,
+            0.40596830138379114,
+            0.449907922971086,
+            0.5690260490648554
+          ],
+          "injection": [
+            0.6859743672523491,
+            0.7295448214153164,
+            0.7404499821881204,
+            0.7482251356705802,
+            0.7634891587318233
+          ],
+          "exfiltration": [
+            0.6664252573738643,
+            0.6780113998064321,
+            0.7318881710069212,
+            0.7368568158450096,
+            0.7368568158450096
+          ],
+          "bruteforce": [
+            0.7054893992342536,
+            0.7251525399076852,
+            0.7251525399076852,
+            0.7251525399076852,
+            0.7251525399076852
+          ]
+        },
+        "evasion_sweep": [
+          {
+            "attack": "injection",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.02,
+            "if_recall": 0.04,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.04,
+            "if_recall": 0.7,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.08,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.16,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.3,
+            "if_recall": 1.0,
+            "rules_recall": 1.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.02,
+            "if_recall": 0.07,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.04,
+            "if_recall": 0.14,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.08,
+            "if_recall": 0.22,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.16,
+            "if_recall": 0.82,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.3,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.02,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.04,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.08,
+            "if_recall": 0.05,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.16,
+            "if_recall": 0.11,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.3,
+            "if_recall": 0.17,
+            "rules_recall": 0.0
+          }
+        ],
+        "latency_ms": {
+          "single_window_mean": 8.501,
+          "single_window_p95": 12.903,
+          "batch20_call_mean": 7.239,
+          "batch20_per_window": 0.362
+        }
+      },
+      {
+        "seed": 43,
+        "n_train": 2000,
+        "n_val": 1300,
+        "n_test": 3600,
+        "static_rules": {
+          "precision": 1.0,
+          "recall": 0.7033,
+          "f1": 0.8258,
+          "fpr": 0.0,
+          "accuracy": 0.9506,
+          "tp": 422,
+          "fp": 0,
+          "tn": 3000,
+          "fn": 178,
+          "per_attack_recall": {
+            "bruteforce": 0.72,
+            "exfiltration": 0.69,
+            "injection": 0.7
+          },
+          "subtle_recall": 0.0222
+        },
+        "isolation_forest": {
+          "0.005": {
+            "validation": {
+              "precision": 0.9803,
+              "recall": 0.9967,
+              "f1": 0.9884,
+              "fpr": 0.006,
+              "accuracy": 0.9946,
+              "tp": 299,
+              "fp": 6,
+              "tn": 994,
+              "fn": 1,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 0.99,
+                "injection": 1.0
+              },
+              "subtle_recall": 0.9889
+            },
+            "test": {
+              "precision": 0.9584,
+              "recall": 0.9983,
+              "f1": 0.978,
+              "fpr": 0.0087,
+              "accuracy": 0.9925,
+              "tp": 599,
+              "fp": 26,
+              "tn": 2974,
+              "fn": 1,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 0.995,
+                "injection": 1.0
+              },
+              "subtle_recall": 0.9944
+            },
+            "threshold": 0.6420268988222289
+          },
+          "0.01": {
+            "validation": {
+              "precision": 0.9585,
+              "recall": 1.0,
+              "f1": 0.9788,
+              "fpr": 0.013,
+              "accuracy": 0.99,
+              "tp": 300,
+              "fp": 13,
+              "tn": 987,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.9245,
+              "recall": 1.0,
+              "f1": 0.9608,
+              "fpr": 0.0163,
+              "accuracy": 0.9864,
+              "tp": 600,
+              "fp": 49,
+              "tn": 2951,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.6237552171790668
+          },
+          "0.02": {
+            "validation": {
+              "precision": 0.9009,
+              "recall": 1.0,
+              "f1": 0.9479,
+              "fpr": 0.033,
+              "accuracy": 0.9746,
+              "tp": 300,
+              "fp": 33,
+              "tn": 967,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.8811,
+              "recall": 1.0,
+              "f1": 0.9368,
+              "fpr": 0.027,
+              "accuracy": 0.9775,
+              "tp": 600,
+              "fp": 81,
+              "tn": 2919,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.6052111339344893
+          },
+          "0.03": {
+            "validation": {
+              "precision": 0.8646,
+              "recall": 1.0,
+              "f1": 0.9274,
+              "fpr": 0.047,
+              "accuracy": 0.9638,
+              "tp": 300,
+              "fp": 47,
+              "tn": 953,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.8403,
+              "recall": 1.0,
+              "f1": 0.9132,
+              "fpr": 0.038,
+              "accuracy": 0.9683,
+              "tp": 600,
+              "fp": 114,
+              "tn": 2886,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.5940401290966036
+          },
+          "0.05": {
+            "validation": {
+              "precision": 0.8152,
+              "recall": 1.0,
+              "f1": 0.8982,
+              "fpr": 0.068,
+              "accuracy": 0.9477,
+              "tp": 300,
+              "fp": 68,
+              "tn": 932,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.7762,
+              "recall": 1.0,
+              "f1": 0.874,
+              "fpr": 0.0577,
+              "accuracy": 0.9519,
+              "tp": 600,
+              "fp": 173,
+              "tn": 2827,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.5758956727060429
+          }
+        },
+        "selected_contamination": 0.005,
+        "selected_test": {
+          "precision": 0.9584,
+          "recall": 0.9983,
+          "f1": 0.978,
+          "fpr": 0.0087,
+          "accuracy": 0.9925,
+          "tp": 599,
+          "fp": 26,
+          "tn": 2974,
+          "fn": 1,
+          "per_attack_recall": {
+            "bruteforce": 1.0,
+            "exfiltration": 0.995,
+            "injection": 1.0
+          },
+          "subtle_recall": 0.9944
+        },
+        "score_distribution": {
+          "normal": [
+            0.3624399777579593,
+            0.3832572765277208,
+            0.4110514309196118,
+            0.4630685504050914,
+            0.5836838437529371
+          ],
+          "injection": [
+            0.6758600924600816,
+            0.7266433301507743,
+            0.7379143084768891,
+            0.7400178953233097,
+            0.7425255644727757
+          ],
+          "exfiltration": [
+            0.6744184661089057,
+            0.6857791192142407,
+            0.7171455278560326,
+            0.7210377388206528,
+            0.7210377388206528
+          ],
+          "bruteforce": [
+            0.6953436210139625,
+            0.7402502477860619,
+            0.7402502477860619,
+            0.7402502477860619,
+            0.7402502477860619
+          ]
+        },
+        "evasion_sweep": [
+          {
+            "attack": "injection",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.02,
+            "if_recall": 0.08,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.04,
+            "if_recall": 0.75,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.08,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.16,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.3,
+            "if_recall": 1.0,
+            "rules_recall": 1.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.02,
+            "if_recall": 0.13,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.04,
+            "if_recall": 0.18,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.08,
+            "if_recall": 0.35,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.16,
+            "if_recall": 0.87,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.3,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.02,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.04,
+            "if_recall": 0.01,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.08,
+            "if_recall": 0.01,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.16,
+            "if_recall": 0.05,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.3,
+            "if_recall": 0.17,
+            "rules_recall": 0.0
+          }
+        ],
+        "latency_ms": {
+          "single_window_mean": 7.551,
+          "single_window_p95": 11.293,
+          "batch20_call_mean": 6.725,
+          "batch20_per_window": 0.336
+        }
+      },
+      {
+        "seed": 44,
+        "n_train": 2000,
+        "n_val": 1300,
+        "n_test": 3600,
+        "static_rules": {
+          "precision": 0.9976,
+          "recall": 0.7017,
+          "f1": 0.8239,
+          "fpr": 0.0003,
+          "accuracy": 0.95,
+          "tp": 421,
+          "fp": 1,
+          "tn": 2999,
+          "fn": 179,
+          "per_attack_recall": {
+            "bruteforce": 0.72,
+            "exfiltration": 0.685,
+            "injection": 0.7
+          },
+          "subtle_recall": 0.0222
+        },
+        "isolation_forest": {
+          "0.005": {
+            "validation": {
+              "precision": 0.9804,
+              "recall": 1.0,
+              "f1": 0.9901,
+              "fpr": 0.006,
+              "accuracy": 0.9954,
+              "tp": 300,
+              "fp": 6,
+              "tn": 994,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.9677,
+              "recall": 0.9983,
+              "f1": 0.9828,
+              "fpr": 0.0067,
+              "accuracy": 0.9942,
+              "tp": 599,
+              "fp": 20,
+              "tn": 2980,
+              "fn": 1,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 0.995,
+                "injection": 1.0
+              },
+              "subtle_recall": 0.9944
+            },
+            "threshold": 0.6479776221172532
+          },
+          "0.01": {
+            "validation": {
+              "precision": 0.9677,
+              "recall": 1.0,
+              "f1": 0.9836,
+              "fpr": 0.01,
+              "accuracy": 0.9923,
+              "tp": 300,
+              "fp": 10,
+              "tn": 990,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.9494,
+              "recall": 1.0,
+              "f1": 0.974,
+              "fpr": 0.0107,
+              "accuracy": 0.9911,
+              "tp": 600,
+              "fp": 32,
+              "tn": 2968,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.6336500395758459
+          },
+          "0.02": {
+            "validation": {
+              "precision": 0.9174,
+              "recall": 1.0,
+              "f1": 0.9569,
+              "fpr": 0.027,
+              "accuracy": 0.9792,
+              "tp": 300,
+              "fp": 27,
+              "tn": 973,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.9063,
+              "recall": 1.0,
+              "f1": 0.9509,
+              "fpr": 0.0207,
+              "accuracy": 0.9828,
+              "tp": 600,
+              "fp": 62,
+              "tn": 2938,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.6102924715955284
+          },
+          "0.03": {
+            "validation": {
+              "precision": 0.8955,
+              "recall": 1.0,
+              "f1": 0.9449,
+              "fpr": 0.035,
+              "accuracy": 0.9731,
+              "tp": 300,
+              "fp": 35,
+              "tn": 965,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.8759,
+              "recall": 1.0,
+              "f1": 0.9339,
+              "fpr": 0.0283,
+              "accuracy": 0.9764,
+              "tp": 600,
+              "fp": 85,
+              "tn": 2915,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.5981187163633634
+          },
+          "0.05": {
+            "validation": {
+              "precision": 0.8264,
+              "recall": 1.0,
+              "f1": 0.905,
+              "fpr": 0.063,
+              "accuracy": 0.9515,
+              "tp": 300,
+              "fp": 63,
+              "tn": 937,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "test": {
+              "precision": 0.8021,
+              "recall": 1.0,
+              "f1": 0.8902,
+              "fpr": 0.0493,
+              "accuracy": 0.9589,
+              "tp": 600,
+              "fp": 148,
+              "tn": 2852,
+              "fn": 0,
+              "per_attack_recall": {
+                "bruteforce": 1.0,
+                "exfiltration": 1.0,
+                "injection": 1.0
+              },
+              "subtle_recall": 1.0
+            },
+            "threshold": 0.5790137776185712
+          }
+        },
+        "selected_contamination": 0.005,
+        "selected_test": {
+          "precision": 0.9677,
+          "recall": 0.9983,
+          "f1": 0.9828,
+          "fpr": 0.0067,
+          "accuracy": 0.9942,
+          "tp": 599,
+          "fp": 20,
+          "tn": 2980,
+          "fn": 1,
+          "per_attack_recall": {
+            "bruteforce": 1.0,
+            "exfiltration": 0.995,
+            "injection": 1.0
+          },
+          "subtle_recall": 0.9944
+        },
+        "score_distribution": {
+          "normal": [
+            0.36266207820592955,
+            0.3828930869827504,
+            0.4147176244229279,
+            0.46877061044416984,
+            0.578718798298954
+          ],
+          "injection": [
+            0.6742332387024691,
+            0.7312747049161441,
+            0.7478624810094239,
+            0.750930956109545,
+            0.756159637168158
+          ],
+          "exfiltration": [
+            0.6952865493267779,
+            0.7068401504568752,
+            0.7255230110716315,
+            0.7410493157394245,
+            0.7410493157394245
+          ],
+          "bruteforce": [
+            0.714390139161276,
+            0.7445289040067431,
+            0.7445289040067431,
+            0.7445289040067431,
+            0.7445289040067431
+          ]
+        },
+        "evasion_sweep": [
+          {
+            "attack": "injection",
+            "intensity": 0.01,
+            "if_recall": 0.01,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.02,
+            "if_recall": 0.06,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.04,
+            "if_recall": 0.66,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.08,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.16,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "injection",
+            "intensity": 0.3,
+            "if_recall": 1.0,
+            "rules_recall": 1.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.02,
+            "if_recall": 0.14,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.04,
+            "if_recall": 0.19,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.08,
+            "if_recall": 0.31,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.16,
+            "if_recall": 0.91,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "exfiltration",
+            "intensity": 0.3,
+            "if_recall": 1.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.01,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.02,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.04,
+            "if_recall": 0.0,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.08,
+            "if_recall": 0.01,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.16,
+            "if_recall": 0.02,
+            "rules_recall": 0.0
+          },
+          {
+            "attack": "bruteforce",
+            "intensity": 0.3,
+            "if_recall": 0.35,
+            "rules_recall": 0.0
+          }
+        ],
+        "latency_ms": {
+          "single_window_mean": 7.07,
+          "single_window_p95": 8.984,
+          "batch20_call_mean": 8.249,
+          "batch20_per_window": 0.412
+        }
+      }
+    ],
+    "evasion_sweep": [
+      {
+        "attack": "injection",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.02,
+        "if_recall": 0.04,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.04,
+        "if_recall": 0.7,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.08,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.16,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.3,
+        "if_recall": 1.0,
+        "rules_recall": 1.0,
+        "seed": 42
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.02,
+        "if_recall": 0.07,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.04,
+        "if_recall": 0.14,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.08,
+        "if_recall": 0.22,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.16,
+        "if_recall": 0.82,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.3,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.02,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.04,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.08,
+        "if_recall": 0.05,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.16,
+        "if_recall": 0.11,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.3,
+        "if_recall": 0.17,
+        "rules_recall": 0.0,
+        "seed": 42
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.02,
+        "if_recall": 0.08,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.04,
+        "if_recall": 0.75,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.08,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.16,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.3,
+        "if_recall": 1.0,
+        "rules_recall": 1.0,
+        "seed": 43
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.02,
+        "if_recall": 0.13,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.04,
+        "if_recall": 0.18,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.08,
+        "if_recall": 0.35,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.16,
+        "if_recall": 0.87,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.3,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.02,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.04,
+        "if_recall": 0.01,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.08,
+        "if_recall": 0.01,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.16,
+        "if_recall": 0.05,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.3,
+        "if_recall": 0.17,
+        "rules_recall": 0.0,
+        "seed": 43
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.01,
+        "if_recall": 0.01,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.02,
+        "if_recall": 0.06,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.04,
+        "if_recall": 0.66,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.08,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.16,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "injection",
+        "intensity": 0.3,
+        "if_recall": 1.0,
+        "rules_recall": 1.0,
+        "seed": 44
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.02,
+        "if_recall": 0.14,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.04,
+        "if_recall": 0.19,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.08,
+        "if_recall": 0.31,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.16,
+        "if_recall": 0.91,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "exfiltration",
+        "intensity": 0.3,
+        "if_recall": 1.0,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.01,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.02,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.04,
+        "if_recall": 0.0,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.08,
+        "if_recall": 0.01,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.16,
+        "if_recall": 0.02,
+        "rules_recall": 0.0,
+        "seed": 44
+      },
+      {
+        "attack": "bruteforce",
+        "intensity": 0.3,
+        "if_recall": 0.35,
+        "rules_recall": 0.0,
+        "seed": 44
+      }
+    ],
+    "scoring_latency_ms": [
+      {
+        "single_window_mean": 8.501,
+        "single_window_p95": 12.903,
+        "batch20_call_mean": 7.239,
+        "batch20_per_window": 0.362,
+        "seed": 42
+      },
+      {
+        "single_window_mean": 7.551,
+        "single_window_p95": 11.293,
+        "batch20_call_mean": 6.725,
+        "batch20_per_window": 0.336,
+        "seed": 43
+      },
+      {
+        "single_window_mean": 7.07,
+        "single_window_p95": 8.984,
+        "batch20_call_mean": 8.249,
+        "batch20_per_window": 0.412,
+        "seed": 44
+      }
+    ],
+    "features": [
+      "request_rate",
+      "key_diversity",
+      "mean_payload",
+      "failure_ratio",
+      "injection_ratio",
+      "scan_ratio"
+    ],
+    "note": "Synthetic traffic only; not evidence of production accuracy."
+  }
+}

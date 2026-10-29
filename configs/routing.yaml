@@ -1,0 +1,26 @@
+# Polyglot Router rules. The classifier is a transparent weighted-rule scorer (not an ML model):
+# each matching rule adds its weight to one workload class; the class with the highest total wins.
+
+classes:
+  key-value: redis
+  document: mongodb
+  wide-column: cassandra
+
+weights:
+  hint: 10.0            # explicit "hint" field in the request
+  key_prefix: 3.0       # key starts with one of the prefixes below
+  op_only_kv: 6.0       # scan / login exist only on the key-value engine
+  op_query: 6.0         # field-filter queries exist only on the document engine
+  scalar_value: 2.0     # string / number value
+  nested_document: 2.5  # object containing nested objects or arrays
+  flat_object: 1.0      # flat object (weakly suggests a document)
+  clustering_field: 3.5 # object containing "ts" or "ck" (time-series / wide row)
+  large_payload: 0.5    # serialized value larger than large_payload_bytes
+  default_kv: 0.5       # tie-breaker so that unknown keys default to the key-value engine
+
+large_payload_bytes: 1024
+
+key_prefixes:
+  key-value: [user, session, cache, cred, product, counter, item, kv, ycsb]
+  document: [doc, order, profile, article, catalog, customer, invoice]
+  wide-column: [sensor, ts, metric, event, log, reading, timeseries]

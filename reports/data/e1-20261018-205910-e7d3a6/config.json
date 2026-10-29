@@ -1,0 +1,22 @@
+{
+  "records": 50000,
+  "operations": 20000,
+  "repetitions": 3,
+  "warmup": 1000,
+  "zipf_theta": 0.99,
+  "value_bytes": 100,
+  "workloads": [
+    "A",
+    "B",
+    "C"
+  ],
+  "configs": [
+    "direct",
+    "hanf",
+    "hanf_sync_ml",
+    "hanf_batched_ml",
+    "hanf_async_ml"
+  ],
+  "seed": 11,
+  "profile": "default"
+}

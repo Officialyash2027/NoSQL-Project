@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Runtime and generated artefacts
+data/runtime/
+data/models/*.joblib
+data/models/*.json
+results/*/
+!results/.gitkeep
+!results/README.md
+graphs/*.png
+logs/
+*.log
+
+# Local configuration and secrets
+.env
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# Office lock files
+~$*
+
+# Documents with personal data (names, register numbers) - kept local only
+Documents/
+reports/IEEE_FINAL_REPORT.*

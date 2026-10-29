@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANF Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/vendor/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><b>HANF</b><div>Hybrid Adaptive NoSQL Framework</div></div>
+    <nav class="nav" id="nav">
+      <button data-view="dashboard" class="active"><span class="num">1</span>Dashboard</button>
+      <button data-view="playground"><span class="num">2</span>Request playground</button>
+      <button data-view="engines"><span class="num">3</span>Engines &amp; routing</button>
+      <button data-view="shards"><span class="num">4</span>Shards</button>
+      <button data-view="security"><span class="num">5</span>Security monitor</button>
+      <button data-view="consistency"><span class="num">6</span>Consistency</button>
+      <button data-view="benchmarks"><span class="num">7</span>Benchmarks</button>
+      <button data-view="experiments"><span class="num">8</span>Experiment history</button>
+    </nav>
+    <div class="footer">
+      <a href="/docs" target="_blank">API docs (Swagger)</a><br>
+      <span id="mode-note"></span><br>
+      <button class="btn small" id="theme-toggle" style="margin-top:8px">Toggle theme</button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- ============================== DASHBOARD -->
+    <section class="view active" id="view-dashboard">
+      <div class="topbar">
+        <div><h1>System dashboard</h1><div class="muted small">Live metrics derived from telemetry-bus events. Refreshes every 3 s.</div></div>
+        <div class="btns" style="margin:0">
+          <label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="seed-reset"> reset first</label>
+          <button class="btn primary" id="btn-seed">Seed dataset</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="health-strip" id="health-strip"><span class="muted">Loading status…</span></div>
+      </div>
+      <div class="grid g4" id="tiles"></div>
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card"><h3>Requests by engine</h3><div class="sub">Count of 'request' events per executing engine</div><div class="chartbox"><canvas id="ch-engine"></canvas></div></div>
+        <div class="card"><h3>Request load by Redis shard</h3><div class="sub">Count of 'request' events per shard (key-load signal used for rebalancing)</div><div class="chartbox"><canvas id="ch-shardload"></canvas></div></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>Recent telemetry events <span class="btns" style="margin:0"><a class="btn small" href="/api/export/telemetry">Export JSON</a><button class="btn small" id="btn-telemetry-reset">Reset counters</button></span></h3>
+        <div class="tablewrap" style="max-height:320px"><table id="events-table"></table></div>
+      </div>
+    </section>
+
+    <!-- ============================== PLAYGROUND -->
+    <section class="view" id="view-playground">
+      <h1>Request playground</h1>
+      <p class="lead">Submit a request to the HANF pipeline. It is classified by the Polyglot Router, mapped to a shard (key-value engine), given a consistency level by the controller, executed on a real engine, and published on the telemetry bus.</p>
+      <div class="grid g2">
+        <div class="card">
+          <h3>Request</h3>
+          <div class="presets" id="presets"></div>
+          <div class="row">
+            <div><label class="f">Operation</label>
+              <select id="pg-op"><option>read</option><option>write</option><option>update</option><option>delete</option><option>query</option><option>scan</option><option>login</option></select></div>
+            <div><label class="f">Key (or SCAN pattern)</label><input id="pg-key" value="product:42"></div>
+          </div>
+          <label class="f">Value (JSON or plain text)</label><textarea id="pg-value" placeholder='e.g. {"name": "x"} or a string'></textarea>
+          <label class="f">Filter (JSON, query only)</label><input id="pg-filter" placeholder='{"status": "paid"}'>
+          <div class="row">
+            <div><label class="f">Workload hint</label><select id="pg-hint"><option value="">(none)</option><option>key-value</option><option>document</option><option>wide-column</option></select></div>
+            <div><label class="f">Force engine</label><select id="pg-engine"><option value="">(router decides)</option><option>redis</option><option>mongodb</option><option>cassandra</option></select></div>
+            <div><label class="f">Client id (security window)</label><input id="pg-client" placeholder="optional"></div>
+          </div>
+          <div class="btns"><button class="btn primary" id="btn-exec">Execute</button><button class="btn" id="btn-classify">Classify only</button></div>
+        </div>
+        <div class="card">
+          <h3>Outcome <span id="pg-status"></span></h3>
+          <div id="pg-outcome" class="muted">No request yet.</div>
+        </div>
+      </div>
+      <div class="grid g3" style="margin-top:14px">
+        <div class="card"><h3>Router classification</h3><div id="pg-class" class="muted">—</div></div>
+        <div class="card"><h3>Shard placement</h3><div id="pg-shard" class="muted">Shown for key-value requests.</div></div>
+        <div class="card"><h3>Returned data</h3><pre class="json" id="pg-data">—</pre></div>
+      </div>
+    </section>
+
+    <!-- ============================== ENGINES -->
+    <section class="view" id="view-engines">
+      <div class="topbar"><div><h1>Engines &amp; routing</h1><div class="muted small">An engine is shown as connected only after a real write/read/delete round trip succeeded.</div></div>
+        <button class="btn" id="btn-deep-health">Run deep health check</button></div>
+      <div class="grid g3" id="adapter-cards"></div>
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card"><h3>Routing rules (configs/routing.yaml)</h3><div class="sub">Transparent weighted rules — not an ML classifier. The class with the highest total weight wins.</div><div id="rules"></div></div>
+        <div class="card"><h3>Engine mapping and fallback</h3><div id="mapping"></div></div>
+      </div>
+    </section>
+
+    <!-- ============================== SHARDS -->
+    <section class="view" id="view-shards">
+      <div class="topbar"><div><h1>Adaptive sharding</h1><div class="muted small">Consistent hashing with virtual nodes over live Redis instances.</div></div></div>
+      <div class="grid g3">
+        <div class="card"><h3>Topology</h3><dl class="kv" id="topo-kv"></dl>
+          <div class="btns">
+            <button class="btn primary" id="btn-add-shard">Add shard &amp; rebalance</button>
+            <button class="btn" id="btn-load-rebalance">Rebalance by observed load</button>
+            <button class="btn" id="btn-reset-shards">Reset to initial shards</button>
+            <button class="btn" id="btn-retry">Retry migration</button>
+          </div>
+          <label class="f">Locate a key</label>
+          <div class="row"><input id="locate-key" value="product:42"><button class="btn" id="btn-locate" style="flex:0">Locate</button></div>
+          <div id="locate-out" class="small muted" style="margin-top:6px"></div>
+        </div>
+        <div class="card"><h3>Hash ring</h3><div class="sub">Sampled virtual-node tokens, coloured by owning shard</div><div id="ring"></div><div class="legend" id="ring-legend"></div></div>
+        <div class="card"><h3>Keys per shard</h3><div class="sub">Live DBSIZE of each Redis instance (HANF DB)</div><div class="chartbox"><canvas id="ch-keys"></canvas></div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3>Last migration report</h3><div id="migration-out" class="muted">No migration yet in this session.</div></div>
+      <div class="card" style="margin-top:14px"><h3>Shard health</h3><div class="tablewrap"><table id="shard-table"></table></div></div>
+    </section>
+
+    <!-- ============================== SECURITY -->
+    <section class="view" id="view-security">
+      <h1>ML security monitor</h1>
+      <p class="lead">Requests are grouped into windows of consecutive requests per client and scored by an Isolation Forest trained on normal synthetic traffic, alongside static threshold rules.</p>
+      <div class="banner warn"><b>How to read this page.</b> <i>Synthetic label</i> = what the traffic generator intended (ground truth, synthetic traffic only). <i>Verdict</i> = what the model decided. <i>Triage</i> = an analyst's decision. An anomaly score is not proof of an attack; only triage marks an event as confirmed. All traffic here is generated locally against the demo dataset.</div>
+      <div class="grid g3">
+        <div class="card"><h3>1. Generate synthetic traffic</h3>
+          <div class="row">
+            <div><label class="f">Normal windows</label><input id="tr-normal" type="number" value="8" min="0" max="100"></div>
+            <div><label class="f">Windows per attack</label><input id="tr-attack" type="number" value="3" min="0" max="50"></div>
+          </div>
+          <label class="f">Attack types</label>
+          <div class="small"><label><input type="checkbox" class="tr-kind" value="injection" checked> injection</label> &nbsp;
+            <label><input type="checkbox" class="tr-kind" value="exfiltration" checked> exfiltration</label> &nbsp;
+            <label><input type="checkbox" class="tr-kind" value="bruteforce" checked> brute force</label></div>
+          <label class="f">Subtle fraction</label><input id="tr-subtle" type="number" value="0.3" step="0.1" min="0" max="1">
+          <div class="btns"><button class="btn" id="btn-normal-only">Normal traffic only</button><button class="btn primary" id="btn-traffic">Generate mixed traffic</button></div>
+          <div id="tr-out" class="small muted" style="margin-top:8px"></div>
+        </div>
+        <div class="card"><h3>2. Evaluate</h3>
+          <div class="sub">Scores all queued windows now and compares verdicts with the generator labels.</div>
+          <div class="btns" style="margin-top:0"><button class="btn primary" id="btn-evaluate">Evaluate now</button><button class="btn" id="btn-sec-clear">Clear history</button><a class="btn" href="/api/export/security-events">Export CSV</a></div>
+          <div id="sec-eval" style="margin-top:10px" class="muted small">Not evaluated yet.</div>
+        </div>
+        <div class="card"><h3>Monitor settings</h3><dl class="kv" id="sec-kv"></dl>
+          <div class="row">
+            <div><label class="f">Scoring mode</label><select id="sec-mode"><option>async</option><option>batched</option><option>sync</option><option>off</option></select></div>
+            <div><label class="f">Contamination</label><input id="sec-cont" type="number" value="0.02" step="0.005" min="0.001" max="0.5"></div>
+          </div>
+          <div class="btns"><button class="btn" id="btn-sec-mode">Apply mode</button><button class="btn" id="btn-retrain">Retrain model</button></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3>Scored windows <span class="small"><label><input type="checkbox" id="sec-only-anom"> anomalies only</label></span></h3>
+        <div class="tablewrap" style="max-height:420px"><table id="sec-table"></table></div></div>
+    </section>
+
+    <!-- ============================== CONSISTENCY -->
+    <section class="view" id="view-consistency">
+      <h1>Adaptive consistency</h1>
+      <div class="banner sim"><b>Simulation.</b> The latency and staleness figures on this page come from a Monte-Carlo model of a three-region, three-replica quorum store (assumed RTTs, jitter and read delay). They are not measurements of a live multi-region database. The live controller's chosen level is applied to Cassandra statements and recorded as advisory for Redis/MongoDB.</div>
+      <div class="grid g2">
+        <div class="card"><h3>Live controller</h3>
+          <dl class="kv" id="cons-kv"></dl>
+          <label class="f">Congestion estimate (× remote RTT): <b id="cong-val">1</b></label>
+          <input type="range" id="cong" min="0.5" max="10" step="0.5" value="1">
+          <div class="btns"><button class="btn primary" id="btn-cong">Apply estimate</button></div>
+          <div class="tablewrap" style="margin-top:10px"><table id="pred-table"></table></div>
+        </div>
+        <div class="card"><h3>Timeline simulation</h3>
+          <label class="f">Congestion phases (comma separated)</label><input id="sim-phases" value="1,1,1,3,3,6,6,3,1,1,1,6,1,1,3,1">
+          <div class="row">
+            <div><label class="f">Ops per phase</label><input id="sim-ops" type="number" value="4000"></div>
+            <div><label class="f">Monte-Carlo samples</label><input id="sim-mc" type="number" value="2000"></div>
+            <div><label class="f">Staleness SLO (%)</label><input id="sim-slo" type="number" value="1" step="0.1"></div>
+          </div>
+          <div class="row">
+            <div><label class="f">Read delay mean (ms)</label><input id="sim-delay" type="number" value="15"></div>
+            <div><label class="f">Jitter σ</label><input id="sim-jitter" type="number" value="0.25" step="0.05"></div>
+            <div><label class="f">Seed</label><input id="sim-seed" type="number" value="2024"></div>
+          </div>
+          <div class="row">
+            <div><label class="f">Writer RTT A,B,C (ms)</label><input id="sim-wrtt" value="2,30,110"></div>
+            <div><label class="f">Reader RTT A,B,C (ms)</label><input id="sim-rrtt" value="30,2,80"></div>
+          </div>
+          <div class="btns"><button class="btn primary" id="btn-sim">Run static vs adaptive</button></div>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card"><h3>Mean latency by strategy</h3><div class="chartbox"><canvas id="ch-sim-lat"></canvas></div></div>
+        <div class="card"><h3>Stale reads by strategy</h3><div class="chartbox"><canvas id="ch-sim-stale"></canvas></div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3>Per-phase history (adaptive vs static QUORUM)</h3><div class="chartbox tall"><canvas id="ch-sim-phase"></canvas></div>
+        <div class="tablewrap" style="max-height:300px;margin-top:10px"><table id="sim-table"></table></div></div>
+    </section>
+
+    <!-- ============================== BENCHMARKS -->
+    <section class="view" id="view-benchmarks">
+      <h1>Benchmarks (E1–E4)</h1>
+      <p class="lead">Runs the experiment scripts in a background job inside the server. For final report numbers prefer the command line (<code>scripts/run_experiments</code>), because UI activity during a run adds noise to E1 timings.</p>
+      <div class="grid g2">
+        <div class="card"><h3>Run an experiment</h3>
+          <div class="row">
+            <div><label class="f">Experiment</label><select id="bm-exp"><option value="e4">E4 – consistency (simulation)</option><option value="e3">E3 – security (synthetic)</option><option value="e2">E2 – sharding (+ live migration)</option><option value="e1">E1 – throughput (live Redis)</option><option value="all">All four</option></select></div>
+            <div><label class="f">Profile</label><select id="bm-profile"><option>quick</option><option>default</option><option>large</option></select></div>
+          </div>
+          <div class="btns"><button class="btn primary" id="btn-bench">Start</button><button class="btn" id="btn-full-suite">Full suite (quick)</button></div>
+          <div class="small muted" id="bm-status" style="margin:8px 0">No job started in this session.</div>
+          <div class="log" id="bm-log"></div>
+        </div>
+        <div class="card"><h3>Results per experiment (runs used in the IEEE report)</h3><div id="bm-latest" class="small"></div></div>
+      </div>
+      <div class="card graphs" style="margin-top:14px"><h3>Graphs from the latest runs</h3><div class="grid g2" id="bm-graphs"></div></div>
+      <div class="card" style="margin-top:14px"><h3>Historical reference (Review II report)</h3>
+        <div class="banner hist">Copied from the Review II report (single-core VM, 2025–26 prototype). <b>Not produced by this implementation</b> — shown only for comparison.</div>
+        <div class="tablewrap"><table id="hist-table"></table></div></div>
+    </section>
+
+    <!-- ============================== EXPERIMENTS -->
+    <section class="view" id="view-experiments">
+      <div class="topbar"><div><h1>Experiment history</h1><div class="muted small">Every run writes config.json, metadata.json, results.json, CSV tables and PNG graphs under results/&lt;experiment&gt;/&lt;run_id&gt;/.</div></div>
+        <button class="btn" id="btn-refresh-exp">Refresh</button></div>
+      <div class="card"><div class="tablewrap" style="max-height:360px"><table id="exp-table"></table></div></div>
+      <div class="card" style="margin-top:14px"><h3>Run details <span id="exp-actions"></span></h3><div id="exp-detail" class="muted">Select a run.</div></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+method,seeds,times_selected,precision,precision_sd,recall,recall_sd,f1,f1_sd,fpr,fpr_sd,recall_injection,recall_injection_sd,recall_exfiltration,recall_exfiltration_sd,recall_bruteforce,recall_bruteforce_sd,subtle_recall,subtle_recall_sd
+Static rules,3,0,0.9992,0.0014,0.7033,0.0017,0.8256,0.0016,0.0001,0.0002,0.7,0.0,0.69,0.005,0.72,0.0,0.0222,0.0
+Isolation Forest (c=0.005),3,3,0.9662,0.0071,0.9978,0.0009,0.9817,0.0033,0.007,0.0015,1.0,0.0,0.9933,0.0029,1.0,0.0,0.9926,0.0032
+Isolation Forest (c=0.01),3,0,0.9391,0.013,1.0,0.0,0.9686,0.0069,0.013,0.0029,1.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0
+Isolation Forest (c=0.02),3,0,0.897,0.0138,1.0,0.0,0.9457,0.0077,0.023,0.0035,1.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0
+Isolation Forest (c=0.03),3,0,0.8662,0.0227,1.0,0.0,0.9282,0.0131,0.031,0.0061,1.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0
+Isolation Forest (c=0.05),3,0,0.7953,0.0167,1.0,0.0,0.8859,0.0104,0.0516,0.0054,1.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0

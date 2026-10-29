@@ -1,0 +1,8 @@
+-r requirements.txt
+pytest==9.1.1
+httpx==0.28.1
+# Report generation (IEEE paper DOCX; PDF export uses Microsoft Word via COM on Windows)
+python-docx==1.2.0
+
+# Optional: headless UI check (scripts/ui_check.py). After installing run: python -m playwright install chromium
+# playwright==1.64.0

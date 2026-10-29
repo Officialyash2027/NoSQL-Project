@@ -1,0 +1,6 @@
+shard,keys_before,keys_after
+shard-1,12382,9917
+shard-2,14864,10985
+shard-3,11592,9884
+shard-4,11162,8526
+shard-5,0,10688

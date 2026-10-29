@@ -1,0 +1,11 @@
+scheme,nodes,remapped_pct_mean,remapped_pct_sd,ideal_pct,imbalance_mean,seeds
+modulo,4->5,79.92,0.0,20.0,1.006,5
+consistent v=16,4->5,21.55,3.3,20.0,1.301,5
+consistent v=64,4->5,18.21,3.54,20.0,1.134,5
+consistent v=128,4->5,18.88,2.02,20.0,1.146,5
+consistent v=256,4->5,20.35,1.27,20.0,1.072,5
+modulo,10->11,91.07,0.0,9.09,1.017,5
+consistent v=16,10->11,8.86,1.85,9.09,1.42,5
+consistent v=64,10->11,8.71,0.95,9.09,1.136,5
+consistent v=128,10->11,8.54,0.77,9.09,1.179,5
+consistent v=256,10->11,9.21,0.44,9.09,1.111,5

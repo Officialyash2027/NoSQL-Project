@@ -1,0 +1,31 @@
+{
+  "train_windows": 2000,
+  "val_normal": 1000,
+  "val_per_attack": 100,
+  "test_normal": 3000,
+  "test_per_attack": 200,
+  "subtle_fraction": 0.3,
+  "contaminations": [
+    0.005,
+    0.01,
+    0.02,
+    0.03,
+    0.05
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "latency_calls": 300,
+  "intensity_levels": [
+    0.01,
+    0.02,
+    0.04,
+    0.08,
+    0.16,
+    0.3
+  ],
+  "intensity_windows": 100,
+  "profile": "default"
+}
