@@ -134,5 +134,5 @@ reports/            report builder (build_report.py), figures, plagiarism-report
 [FINAL_SUBMISSION_CHECKLIST](FINAL_SUBMISSION_CHECKLIST.md)
 
 ## Authors
-Rohit Kumar, Yash Krishnadixit, Dev Pradaan — Slot D1,
+Rohit Kumar, Yash Krishna Dixit, Dev Pradhan — Slot D1,
 faculty: Manjula V. (Names and register numbers as given in the Review II report.)
